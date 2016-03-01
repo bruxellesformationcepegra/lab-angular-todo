@@ -8,9 +8,9 @@ Vous partez d'une page HTML à dynamiser avec Angular 1.X;
 
 ### Charger AngularJS
 
-Dans le`head`, rajoutez
+Dans le `head`, rajoutez avant l'appel à todo.js
 
-```javascript
+```html
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
 ```
 
