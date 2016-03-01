@@ -60,7 +60,7 @@ Il faut maintenant attacher le controlleur au DOM
 
 ### Ajoutons quelques données
 
-On va maintenant créer quelques données (modèles) pour notre application. Dans le corps du controlleur ´TodoListController` dans `todo.js`, rajoutez
+On va maintenant créer quelques données (modèles) pour notre application. Dans le corps du controlleur `TodoListController` dans `todo.js`, rajoutez
 
 ```javascript
 var todoList = this; //this, c'est le controlleur
@@ -69,9 +69,97 @@ todoList.todos = [
   {text:'faire un projet avec Angular', done:false}];
 ```
 
-### Le premier *data binding£
+### Le premier *data binding*
 
-Maintenant qu'on a des données on va pouvoir dynamiser la liste de tâches dans la page HTML. Ne mettez qu'un seul `<li>` dans la liste et ajoutez lui la **directive ng-repeat** <li ng-repeat="todo in todoList.todos">
+Maintenant qu'on a des données on va pouvoir dynamiser la liste de tâches dans la page HTML. Ne mettez qu'un seul `<li>` dans la liste et ajoutez lui la *directive* **ng-repeat** 
+
+```
+<li ng-repeat="todo in todoList.todos">
+```
+
 Cela veut dire que pour chaque objet dans `todos`, Angular va créer une copie de l'élement `<li>`. Qui plus est, quand les données seront modifiées (nouvelle tâche ou tâche effacée) la liste se mettra à jour automatiquement !
+
+`todo in todoList.todos` veut dire que lors de chaque répétition, nous aurons accès aux données de la tâche courante via `todo`. Nous pouvons donc compléter le code du`<li>` en lui donnant le nom de la tâche et son statut (qui aura une influence sur son style) de cette manière 
+
+```
+<span class="done-{{todo.done}}">{{todo.text}}</span>
+```
+
+Il manque une chose, le fait de pouvoir lier la checkbox qui se trouve en face de la tâche, à la tâche elle-même. De cette manière, quand on cochera la checkbox, la tâche sera considérée comme faite (et inversément). 
+De manière similaire, si la tâche est considérée dès le départ comme faite, la checkbox s'affichera cochée.
+
+Pour cela il faut lier le contrôle, la checkbox, à un modèle, la tâche. On va utiliser la directive **ng-model** sur l'`input` et dire qu'on lie la valeur de l'input à la propriété `done`de la tâche.
+
+```
+<input type="checkbox" ng-model="todo.done">
+```
+
+### La première propriété calculée
+
+Une propriété calculée c'est généralement une propriété dont la valeur renvoyée dépend de valeurs d'autres propriétés. Ici, l'idée c'est de faire une propriété calculée qui va renvoyer le nombre de tâches encore à faire.
+Dans la pratique, c'est une fonction. On va donc rajouter une fonction `remaining` au controlleur.
+
+```javascript
+todoList.remaining = function() {
+  var count = 0;
+  angular.forEach(todoList.todos, function(todo) {
+    count += todo.done ? 0 : 1;
+  });
+  return count;
+};
+```
+
+Et on va l'utiliser maintenant dans l'HTML
+
+```
+<span>{{todoList.remaining()}} sur {{todoList.todos.length}} restantes</span>
+```
+
+### Le premier submit
+
+Bon ça serait quand même cool de pouvoir rajouter une tâche ! 
+
+De la même manière que précédemment, on va rajouter une fonction dans le controlleur qui va nous permettre de rajouter une tâche à la liste de tâches qu'il possède.
+
+```javascript
+todoList.addTodo = function() {
+  todoList.todos.push({text:todoList.todoText, done:false});
+  todoList.todoText = '';
+};
+```
+
+Cette fonction va rajouter une nouvelle tâche à `todos`, initialisée à non faite et dont le texte provient de la propriété `todoText` du controlleur. D'où vient cette propriété ? Elle est définie comme modèle du champ texte du formulaire via `ng-model`.
+
+```
+<input type="text" size="30" ng-model="todoList.todoText" placeholder="ajouter une nouvelle tâche">
+```
+
+Il manque une chose pour que ça marche, il faut dire au formulaire que le submit doit déclencher la méthode `addTodo` via la directive **ng-submit**
+
+```
+<form ng-submit="todoList.addTodo()">
+```
+
+### La première action au click
+
+Allez, encore un petit pour la route. Il s'agit ici de déclencher du code au click sur un lien pour archiver (effacer) toutes les tâches faites histoire de pouvoir faire de la place.
+
+On va encore rajouter une méthode au controlleur:
+
+```javascript
+todoList.archive = function() {
+  var oldTodos = todoList.todos;
+  todoList.todos = [];
+  angular.forEach(oldTodos, function(todo) {
+    if (!todo.done) todoList.todos.push(todo);
+  });
+};
+```
+
+Et pour appeler cette méthode il faut utiliser la directive **ng-click** dans le code HTML
+
+```
+[ <a href="" ng-click="todoList.archive()">archive</a> ]
+```
 
 
