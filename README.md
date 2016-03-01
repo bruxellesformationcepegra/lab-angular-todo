@@ -63,7 +63,7 @@ Il faut maintenant attacher le controlleur au DOM
 On va maintenant créer quelques données (modèles) pour notre application. Dans le corps du controlleur `TodoListController` dans `todo.js`, rajoutez
 
 ```javascript
-var todoList = this; //this, c'est le controlleur
+var todoList = this; //ici this, c'est le controlleur
 todoList.todos = [
   {text:'apprendre Angular', done:true},
   {text:'faire un projet avec Angular', done:false}];
