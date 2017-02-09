@@ -17,7 +17,7 @@ Dans le `head`, rajoutez avant l'appel à todo.js
 ### ng-app
 
 `ng-app` est ce qu'on appelle une [directive](https://docs.angularjs.org/guide/directive) en AngularJS. Une directive permet d'exécuter du code JavaScript depuis l'HTML.
-`ng-app` désigne l'élément racine de l'application. Il suffit d'ajouter un attribut `ng-app` sur la balise `<html>` et en lui donnant le nom de l'application, ici "todoApp". Ce nom est le nom du module qui sera chargé au démarrage de l'application.
+`ng-app` désigne l'élément racine de l'application. Il suffit d'ajouter un attribut `ng-app` sur la balise `<html>` et en lui donnant le nom de l'application, ici `todoApp`. Ce nom est le nom du module qui sera chargé au démarrage de l'application.
 
 ```
 ng-app="todoApp"
@@ -27,13 +27,13 @@ ng-app="todoApp"
 
 Nous allons devoir créer notre premier [module](https://docs.angularjs.org/guide/module). Un module est une sorte de "conteneur" pour les différentes partie de votre application. Ici, notre application ne fait qu'une chose donc nous allons faire un module. 
 
-Passez dans `todo.js` pour faire le module "todoApp".
+Passez dans `todo.js` pour faire le module `todoApp`.
 
 ```javascript
 var todoAppModule = angular.module('todoApp', []);
 ```
 
-Le nom "todoApp" est le même que celui indiqué dans l'attribute `ng-app`.
+Le nom `todoApp` est le même que celui indiqué dans l'attribute `ng-app`.
 Les `[]` servent à indiquer une liste de **dépendances** dont le module a besoin - ici, rien.
 
 ### MVC ?
@@ -53,7 +53,7 @@ Nous allons donc créer un [controlleur](https://docs.angularjs.org/guide/contro
   });
 ```
 
-Il faut maintenant attacher le controlleur au DOM
+Il faut maintenant attacher le controlleur au DOM, via la directive `ng-controller`. Nous lui spécifions le nom du controlleur,  `TodoListController` et un alias, `todoList` que nous allons utiliser par la suite.
 
 ```
 <div ng-controller="TodoListController as todoList">
@@ -61,11 +61,10 @@ Il faut maintenant attacher le controlleur au DOM
 
 ### Ajoutons quelques données
 
-On va maintenant créer quelques données (modèles) pour notre application. Dans le corps du controlleur `TodoListController` dans `todo.js`, rajoutez
+On va maintenant créer quelques données (modèles) pour notre application. Dans le corps du controlleur `TodoListController` dans `todo.js`, on va rajouter une variable au controlleur qui s'appelle `todos` et qui sera une liste de tâches.
 
 ```javascript
-var todoList = this; //ici this, c'est le controlleur
-todoList.todos = [
+this.todos = [
   {text:'apprendre Angular', done:true},
   {text:'faire un projet avec Angular', done:false}];
 ```
@@ -78,18 +77,21 @@ Maintenant qu'on a des données on va pouvoir dynamiser la liste de tâches dans
 <li ng-repeat="todo in todoList.todos">
 ```
 
-Cela veut dire que pour chaque objet dans `todos`, Angular va créer une copie de l'élement `<li>`. Qui plus est, quand les données seront modifiées (nouvelle tâche ou tâche effacée) la liste se mettra à jour automatiquement !
+`todoList` c'est l'alias de notre controlleur. Et on accède à sa propriété `todos` que l'on vient de créer.
+Le résultat c'est que pour chaque objet dans `todos`, Angular va créer une copie de l'élement `<li>`. Qui plus est, quand les données seront modifiées (nouvelle tâche ou tâche effacée) la liste se mettra à jour automatiquement !
 
-`todo in todoList.todos` veut dire que lors de chaque répétition, nous aurons accès aux données de la tâche courante via `todo`. Nous pouvons donc compléter le code du`<li>` en lui donnant le nom de la tâche et son statut (qui aura une influence sur son style) de cette manière 
+`todo in todoList.todos` veut dire que lors de chaque répétition, nous aurons accès aux données de la tâche courante via l'objet `todo`. Nous pouvons donc compléter le code du`<li>` en lui donnant le nom de la tâche et son statut (qui aura une influence sur son style) de cette manière 
 
 ```
 <span class="done-{{todo.done}}">{{todo.text}}</span>
 ```
 
+Les codes entre `{{ }}` s'appellent des [expressions](https://docs.angularjs.org/guide/expression).
+
 Il manque une chose, le fait de pouvoir lier la checkbox qui se trouve en face de la tâche, à la tâche elle-même. De cette manière, quand on cochera la checkbox, la tâche sera considérée comme faite (et inversément). 
 De manière similaire, si la tâche est considérée dès le départ comme faite, la checkbox s'affichera cochée.
 
-Pour cela il faut lier le contrôle, la checkbox, à un modèle, la tâche. On va utiliser la directive **ng-model** sur l'`input` et dire qu'on lie la valeur de l'input à la propriété `done`de la tâche.
+Pour cela il faut lier l'élément HTML, la checkbox, à un modèle, la tâche. On va utiliser la directive **ng-model** sur l'`input` et dire qu'on lie la valeur de l'input à la propriété `done`de la tâche.
 
 ```
 <input type="checkbox" ng-model="todo.done">
