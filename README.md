@@ -16,7 +16,7 @@ Dans le `head`, rajoutez avant l'appel à todo.js
 
 ### ng-app
 
-`ng-app` est ce qu'on appelle une **directive** en AngularJS. Une directive permet d'exécuter du code JavaScript depuis l'HTML.
+`ng-app` est ce qu'on appelle une [directive](https://docs.angularjs.org/guide/directive) en AngularJS. Une directive permet d'exécuter du code JavaScript depuis l'HTML.
 `ng-app` désigne l'élément racine de l'application. Il suffit d'ajouter un attribut `ng-app` sur la balise `<html>` et en lui donnant le nom de l'application, ici "todoApp". Ce nom est le nom du module qui sera chargé au démarrage de l'application.
 
 ```
