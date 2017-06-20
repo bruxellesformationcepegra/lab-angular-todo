@@ -103,9 +103,9 @@ Une propriété calculée c'est généralement une propriété dont la valeur re
 Dans la pratique, c'est une fonction. On va donc rajouter une fonction `remaining` au controlleur.
 
 ```javascript
-todoList.remaining = function() {
+this.remaining = function() {
   var count = 0;
-  angular.forEach(todoList.todos, function(todo) {
+  angular.forEach(this.todos, function(todo) {
     count += todo.done ? 0 : 1;
   });
   return count;
@@ -125,9 +125,9 @@ Bon ça serait quand même cool de pouvoir rajouter une tâche !
 De la même manière que précédemment, on va rajouter une fonction dans le controlleur qui va nous permettre de rajouter une tâche à la liste de tâches qu'il possède.
 
 ```javascript
-todoList.addTodo = function() {
-  todoList.todos.push({text:todoList.todoText, done:false});
-  todoList.todoText = '';
+this.addTodo = function() {
+  this.todos.push({text:todoList.todoText, done:false});
+  this.todoText = '';
 };
 ```
 
@@ -150,9 +150,10 @@ Allez, encore un petit pour la route. Il s'agit ici de déclencher du code au cl
 On va encore rajouter une méthode au controlleur:
 
 ```javascript
-todoList.archive = function() {
-  var oldTodos = todoList.todos;
-  todoList.todos = [];
+this.archive = function() {
+  var oldTodos = this.todos;
+  this.todos = [];
+  var todoList = this;
   angular.forEach(oldTodos, function(todo) {
     if (!todo.done) todoList.todos.push(todo);
   });
