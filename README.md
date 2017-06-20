@@ -4,7 +4,7 @@ Débuter avec le modèle MVC et AngularJS avec cette todo list toute simple ! Vo
 
 Vous partez d'une page HTML à dynamiser avec Angular 1.X;
 
-##Tâches à réaliser
+## Tâches à réaliser
 
 ### Charger AngularJS
 
